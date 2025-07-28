@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const { Book, validateCreateBook, validateUpdateBook } = require("../models/Book");
 
+// Http Methods / Verbs
+
 /**
 *   @desc   Get all books
 *   @route  /api/books

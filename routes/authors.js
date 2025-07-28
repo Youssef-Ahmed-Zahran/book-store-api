@@ -1,104 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const asyncHandler = require("express-async-handler");
-const { Author, validateCreateAuthor, validateUpdateAuthor } = require("../models/Author");
 const { verifyTokenAndAdmin } = require("../middlewares/verifyToken");
+const {
+    getAllAuthors,
+    getAuthorById,
+    createAuthor,
+    updateAuthor,
+    deleteAuthor
+} = require("../controllers/authorController");
 
 // Http Methods / Verbs
 
-/**
-*   @desc   Get all authors
-*   @route  /api/authors
-*   @method  Get
-*   @access  public
-*/
-router.get("/", asyncHandler( async (req,res) => {
-    const { pageNumber } = req.query;
-    const authorsPerPage = 2;
+router.route("/")
+.get(getAllAuthors)
+.post(verifyTokenAndAdmin, createAuthor);
 
-    const authorList = await Author.find().skip((pageNumber - 1) * authorsPerPage).limit(authorsPerPage);
-    res.status(200).json(authorList);
-}
-));
-
-/**
-*   @desc   Get author by id
-*   @route  /api/authors/:id
-*   @method  Get
-*   @access  public
-*/
-router.get("/:id", asyncHandler( async (req,res) => {
-        const author = await Author.findById(req.params.id);
-        if (author) {
-            res.status(200).json(author);
-        } else {
-            res.status(404).json({message: "author not found"});
-        }
-    }
-));
-
-/**
-*   @desc   Create a new author
-*   @route  /api/authors
-*   @method  Post
-*   @access  private (Only Admin)
-*/
-router.post("/", verifyTokenAndAdmin, asyncHandler( async (req,res) => {
-        const { error } = validateCreateAuthor(req.body);
-        if (error) {
-            return res.status(400).json({message: error.details[0].message})
-        }
-        const author = new Author({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            nationality: req.body.nationality,
-            image: req.body.image,
-        });
-        const result = await author.save();
-        res.status(201).json(result);
-}));
-
-/**
-*   @desc   Update author by id
-*   @route  /api/authors/:id
-*   @method  Put
-*   @access  private (Only Admin)
-*/
-router.put("/:id", verifyTokenAndAdmin, asyncHandler( async (req,res) => {
-    const { error } = validateUpdateAuthor(req.body);
-    if( error ) {
-        return res.status(400).json({message: error.details[0].message})
-    }
-    const author = await Author.findByIdAndUpdate(
-        req.params.id,
-        {
-            $set: {
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                nationality: req.body.nationality,
-                image: req.body.image,
-            },
-        },
-        { new:true }
-        );
-
-        res.status(200).json(author);
-}));
-
-/**
-*   @desc   Delete book by id
-*   @route  /api/books/:id
-*   @method  Delete
-*   @access  private (Only Admin)
-*/
-router.delete("/:id", verifyTokenAndAdmin, asyncHandler( async (req,res) => {
-    const author = await Author.findById(req.params.id);
-    if (author) {
-        await Author.findByIdAndDelete(req.params.id)
-        res.status(200).json({ message: "author has been deleted" });
-    } else {
-        res.status(404).json({ message: "author not found" });
-    }
-}));
+router.route("/:id")
+.get(getAuthorById)
+.put(verifyTokenAndAdmin, updateAuthor)
+.delete(verifyTokenAndAdmin, deleteAuthor);
 
 module.exports = router;

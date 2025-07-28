@@ -5,10 +5,12 @@ const { getAllBooks, getBookById, createBook, updateBook, deleteBook } = require
 
 // Http Methods / Verbs
 
+// /api/books
 router.route("/")
 .get(getAllBooks)
 .post(verifyTokenAndAdmin, createBook);
 
+// /api/books/:id
 router.route("/:id")
 .get(getBookById)
 .put(verifyTokenAndAdmin, updateBook)
