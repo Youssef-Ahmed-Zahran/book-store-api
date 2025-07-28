@@ -13,9 +13,12 @@ const { verifyTokenAndAdmin } = require("../middlewares/verifyToken");
 *   @access  public
 */
 router.get("/", asyncHandler( async (req,res) => {
-        const authorList = await Author.find();
-        res.status(200).json(authorList);
-    }
+    const { pageNumber } = req.query;
+    const authorsPerPage = 2;
+
+    const authorList = await Author.find().skip((pageNumber - 1) * authorsPerPage).limit(authorsPerPage);
+    res.status(200).json(authorList);
+}
 ));
 
 /**
