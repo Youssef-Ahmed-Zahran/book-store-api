@@ -11,10 +11,12 @@ const {
 
 // Http Methods / Verbs
 
+// /api/authors
 router.route("/")
 .get(getAllAuthors)
 .post(verifyTokenAndAdmin, createAuthor);
 
+// /api/authors/:id
 router.route("/:id")
 .get(getAuthorById)
 .put(verifyTokenAndAdmin, updateAuthor)
