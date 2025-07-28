@@ -1,5 +1,5 @@
-const { Book, validateCreateBook, validateUpdateBook } = require("../models/Book");
 const asyncHandler = require("express-async-handler");
+const { Book, validateCreateBook, validateUpdateBook } = require("../models/Book");
 
 /**
 *   @desc   Get all books

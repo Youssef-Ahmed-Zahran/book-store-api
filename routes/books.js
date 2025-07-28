@@ -5,10 +5,13 @@ const { getAllBooks, getBookById, createBook, updateBook, deleteBook } = require
 
 // Http Methods / Verbs
 
-router.get("/", getAllBooks);
-router.get("/:id", getBookById);
-router.post("/", verifyTokenAndAdmin, createBook);
-router.put("/:id", verifyTokenAndAdmin, updateBook);
-router.delete("/:id", verifyTokenAndAdmin, deleteBook);
+router.route("/")
+.get(getAllBooks)
+.post(verifyTokenAndAdmin, createBook);
+
+router.route("/:id")
+.get(getBookById)
+.put(verifyTokenAndAdmin, updateBook)
+.delete(verifyTokenAndAdmin, deleteBook);
 
 module.exports = router;
