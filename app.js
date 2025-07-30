@@ -12,6 +12,7 @@ const app = express();
 
 //Apply Middlewares
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(logger);
 
 app.set('view engine', 'ejs');
