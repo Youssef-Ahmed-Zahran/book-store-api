@@ -35,7 +35,7 @@ module.exports.sendForgotPasswordLink = asyncHandler( async (req,res) => {
     const link = `http://localhost:8080/password/reset-password/${user._id}/${token}`;
 
     const transporter = nodemailer.createTransport({
-        service: "gemail",
+        service: "gmail",
         auth: {
             user: process.env.USER_EMAIL,
             pass: process.env.USER_PASS
