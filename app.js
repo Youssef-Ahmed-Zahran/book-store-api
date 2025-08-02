@@ -4,7 +4,7 @@ const conectToDB = require("./config/db");
 const { notFound, errorHanlder } = require("./middlewares/errors");
 const path = require("path");
 const helmet = require("helmet");
-var cors = require('cors')
+const cors = require('cors')
 require("dotenv").config();
 
 
