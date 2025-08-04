@@ -5,7 +5,6 @@ const {
   validateLoginUser,
 } = require("../models/User");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 /**
  *   @desc   Register New User
